@@ -1,0 +1,25 @@
+{
+  "name": "emotion-engine",
+  "description": "",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peabnuts123/emotion-engine.git"
+  },
+  "keywords": [],
+  "author": "Jon Bell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/peabnuts123/emotion-engine/issues"
+  },
+  "homepage": "https://github.com/peabnuts123/emotion-engine#readme",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "ws": "^7.2.3"
+  }
+}
