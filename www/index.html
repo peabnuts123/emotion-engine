@@ -3,25 +3,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0"/>
 
-  <title>Emotion engine</title>
+  <title>How are you?</title>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Emotion engine</h1>
+  <div class="site-wrapper">
+    <div class="console" id="console"></div>
 
-    <button type="button" class="btn btn-primary" id="button-joy">Joy</button>
-    <button type="button" class="btn btn-primary" id="button-scared">Scared</button>
-    <button type="button" class="btn btn-primary" id="button-sad">Sad</button>
-    <button type="button" class="btn btn-primary" id="button-angry">Angry</button>
+    <div class="site-container">
+      <h1 class="display">I am feeling</h1>
 
-    <pre><code id="debug_console"></code></pre>
+      <button type="button" class="button is-loading" id="button-joy">Joy</button>
+      <button type="button" class="button is-loading" id="button-scared">Scared</button>
+      <button type="button" class="button is-loading" id="button-sad">Sad</button>
+      <button type="button" class="button is-loading" id="button-angry">Angry</button>
+    </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>

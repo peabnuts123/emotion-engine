@@ -1,6 +1,17 @@
+// The max number of items to display in the background
+var MAX_ITEMS = 200;
+
 $(function () {
   // Connect to web socket
-  var ws = new WebSocket('ws://' + location.hostname + ':8081');
+  var websocketUrl = location.protocol === 'https:' ? 'wss://' : 'ws://' + location.hostname + ':8081';
+  // @TODO add https config
+  var ws = new WebSocket(websocketUrl);
+
+  // Whether the frontend has received the first message from the server
+  var hasLoaded = false;
+
+  // How many items have been added to the DOM
+  var numItems = 0;
 
   // Reference to the state from the server
   var serverState = {};
@@ -15,6 +26,14 @@ $(function () {
     // Parse the data into JSON (as it is a string)
     var data = JSON.parse(payload.data);
 
+    if (!hasLoaded) {
+      $('#button-joy').removeClass('is-loading');
+      $('#button-scared').removeClass('is-loading');
+      $('#button-sad').removeClass('is-loading');
+      $('#button-angry').removeClass('is-loading');
+      hasLoaded = true;
+    }
+
     // If there is state information in the data, store that
     if (data.state) {
       serverState = data.state;
@@ -23,7 +42,14 @@ $(function () {
 
     // If there is emotion information in the data, log that to the fake console
     if (data.emotion) {
-      $('#debug_console').append('<div>I am feeling ' + data.emotion + '</div>');
+      $('#console').prepend('<span class="emotion-' + data.emotion + '">' + data.emotion + ' </span>');
+      if (numItems >= MAX_ITEMS) {
+        // Remove the last item if we've reached max
+        $("#console>div:last-child").remove();
+      } else {
+        // Have not yet reached max, continue counting
+        numItems++;
+      }
     }
   });
 
@@ -34,10 +60,10 @@ $(function () {
 
   // Read the server's state object and update button totals to use this
   function refreshTotals() {
-    $('#button-joy').text('Joy (' + serverState.joyCount + ')');
-    $('#button-scared').text('Scared (' + serverState.scaredCount + ')');
-    $('#button-sad').text('Sad (' + serverState.sadCount + ')');
-    $('#button-angry').text('Angry (' + serverState.angryCount + ')');
+    $('#button-joy').text('Joy\n(' + serverState.joyCount + ')');
+    $('#button-scared').text('Scared\n(' + serverState.scaredCount + ')');
+    $('#button-sad').text('Sad\n(' + serverState.sadCount + ')');
+    $('#button-angry').text('Angry\n(' + serverState.angryCount + ')');
   }
 
   // Button click handlers
