@@ -3,7 +3,7 @@ var MAX_ITEMS = 200;
 
 $(function () {
   // Connect to web socket
-  var websocketUrl = location.protocol === 'https:' ? 'wss://' : 'ws://' + location.hostname + ':8081';
+  var websocketUrl = process.env['WEB_SOCKET_ADDRESS'];
   // @TODO add https config
   var ws = new WebSocket(websocketUrl);
 
