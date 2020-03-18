@@ -3,9 +3,7 @@ var MAX_ITEMS = 200;
 
 $(function () {
   // Connect to web socket
-  var websocketUrl = process.env['WEB_SOCKET_ADDRESS'];
-  // @TODO add https config
-  var ws = new WebSocket(websocketUrl);
+  var ws = new WebSocket(WEB_SOCKET_ADDRESS);
 
   // Whether the frontend has received the first message from the server
   var hasLoaded = false;

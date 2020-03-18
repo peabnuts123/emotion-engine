@@ -16,7 +16,6 @@ services:
     working_dir: '/app'
     environment:
       NODE_ENV: 'production'
-      WEB_SOCKET_ADDRESS: "${WEB_SOCKET_ADDRESS}"
     networks:
       # Connect to external network used by traefik
       - traefik
