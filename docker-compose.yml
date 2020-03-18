@@ -8,9 +8,9 @@ services:
     labels:
       # Traefik config
       traefik.enable: "true"
-      traefik.frontend.rule: "Host:${HOST_NAME}"
+      traefik.frontend.rule: "Host:${HOST_NAME_SERVER}"
       traefik.port: "8081"
-      traefik.protocol: "wss"
+      traefik.protocol: "ws"
     volumes:
       - './:/app'
     working_dir: '/app'
@@ -28,7 +28,7 @@ services:
     labels:
       # Traefik config
       traefik.enable: "true"
-      traefik.frontend.rule: "Host:${HOST_NAME}"
+      traefik.frontend.rule: "Host:${HOST_NAME_CLIENT}"
       traefik.port: "80"
       traefik.frontend.redirect.entryPoint: https
     volumes:
