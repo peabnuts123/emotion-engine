@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  server:
+    image: node:lts-alpine
+    container_name: emotion_server
+    restart: unless-stopped
+    labels:
+      # Traefik config
+      traefik.enable: "true"
+      traefik.frontend.rule: "Host:${HOST_NAME}"
+      traefik.port: "8081"
+      traefik.protocol: "wss"
+    volumes:
+      - './:/app'
+    working_dir: '/app'
+    environment:
+      NODE_ENV: 'production'
+    networks:
+      # Connect to external network used by traefik
+      - traefik
+    command: sh -c 'npm install && npm start'
+
+  client:
+    image: nginx:alpine
+    container_name: emotion_client
+    restart: unless-stopped
+    labels:
+      # Traefik config
+      traefik.enable: "true"
+      traefik.frontend.rule: "Host:${HOST_NAME}"
+      traefik.port: "80"
+      traefik.frontend.redirect.entryPoint: https
+    volumes:
+      - './www/:/usr/share/nginx/html:ro'
+    ports:
+      - '8080:80/tcp'
+    networks:
+      # Connect to external network used by traefik
+      - traefik
+
+
+networks:
+  # Named network created for Traefik
+  traefik:
+    external: true
