@@ -89,14 +89,14 @@ body{
 }
 
 .emotion-joy {
-  color: yellow;
+  fill: yellow;
 }
 .emotion-scared {
-  color: lightblue;
+  fill: lightblue;
 }
 .emotion-sad {
-  color: blue;
+  fill: blue;
 }
 .emotion-angry {
-  color: red;
+  fill: red;
 }

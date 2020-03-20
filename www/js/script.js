@@ -1,7 +1,16 @@
+// CONFIG
 // The max number of items to display in the background
 var MAX_ITEMS = 200;
 
 $(function () {
+
+  var emotionSet = [];
+
+  $(window).on('resize', function () {
+    drawTriangles();
+  })
+  drawTriangles();
+
   // Connect to web socket
   var ws = new WebSocket(WEB_SOCKET_ADDRESS);
 
@@ -40,14 +49,7 @@ $(function () {
 
     // If there is emotion information in the data, log that to the fake console
     if (data.emotion) {
-      $('#console').prepend('<span class="emotion-' + data.emotion + '">' + data.emotion + ' </span>');
-      if (numItems >= MAX_ITEMS) {
-        // Remove the last item if we've reached max
-        $("#console>div:last-child").remove();
-      } else {
-        // Have not yet reached max, continue counting
-        numItems++;
-      }
+      addTriangle(data.emotion);
     }
   });
 
@@ -62,6 +64,102 @@ $(function () {
     $('#button-scared').text('Scared\n(' + serverState.scaredCount + ')');
     $('#button-sad').text('Sad\n(' + serverState.sadCount + ')');
     $('#button-angry').text('Angry\n(' + serverState.angryCount + ')');
+  }
+
+  function drawTriangles() {
+    // Responsive triangle size
+    var TRIANGLE_SIZE_PIXELS = Math.ceil($(window).width() / 1000) * 50;
+
+    // Work out height of equilateral triangle
+    var triangleHeight = Math.sqrt((TRIANGLE_SIZE_PIXELS * TRIANGLE_SIZE_PIXELS) - ((TRIANGLE_SIZE_PIXELS / 2) * (TRIANGLE_SIZE_PIXELS / 2)));
+    // Number of triangles x and y
+    var dimX = Math.ceil($(window).width() / TRIANGLE_SIZE_PIXELS);
+    var dimY = Math.ceil($(window).height() / triangleHeight);
+
+    // Maintain an offset per row (i.e. every second row is offset by half a triangle's width)
+    var offsetSize = TRIANGLE_SIZE_PIXELS / 2;
+    var currentRowOffset = 0;
+
+    // Clear the svg out
+    $('#console').empty();
+
+    // @RESUME @TODO This needs to become a while loop and test if pointTop is on screen or not
+    for (var y = 0; y < dimY; y++) {
+      for (var x = 0; x < dimX; x++) {
+        // @NOTE JON STAY AWAY
+
+        // Draw upright triangle
+        var pointTop = {
+          x: ((x * TRIANGLE_SIZE_PIXELS) + currentRowOffset),
+          y: y * triangleHeight,
+        };
+        var pointLeft = {
+          x: pointTop.x - offsetSize,
+          y: pointTop.y + triangleHeight,
+        };
+        var pointRight = {
+          x: pointTop.x + offsetSize,
+          y: pointTop.y + triangleHeight,
+        };
+        $('#console').append('<path ' +
+          'd="M ' + pointTop.x + ' ' + pointTop.y + ' L ' + pointLeft.x + ' ' + pointLeft.y + ' L ' + pointRight.x + ' ' + pointRight.y + ' z" ' +
+          '/>');
+
+        // Draw upside-down triangle
+        var pointBottom = {
+          x: (x * TRIANGLE_SIZE_PIXELS) + currentRowOffset + offsetSize,
+          y: y * triangleHeight + triangleHeight,
+        };
+        pointLeft = {
+          x: pointBottom.x - offsetSize,
+          y: pointBottom.y - triangleHeight,
+        };
+        pointRight = {
+          x: pointBottom.x + offsetSize,
+          y: pointBottom.y - triangleHeight,
+        };
+        $('#console').append('<path ' +
+          'd="M ' + pointBottom.x + ' ' + pointBottom.y + ' L ' + pointLeft.x + ' ' + pointLeft.y + ' L ' + pointRight.x + ' ' + pointRight.y + ' z" ' +
+          '/>');
+      }
+      currentRowOffset = -(currentRowOffset + offsetSize) % (offsetSize * 2);
+    }
+
+    // Force the SVG to redraw
+    $('#svgContainer').html($('#svgContainer').html());
+
+    // Redraw triangle colors
+    updateTriangles();
+  }
+
+  function updateTriangles() {
+    var $paths = $('#console path');
+    for (var i = 0; i < $paths.length; i++) {
+      if (i < emotionSet.length) {
+        $paths[i].setAttribute('class', 'emotion-' + emotionSet[i]);
+      } else {
+        $paths[i].setAttribute('class', '');
+      }
+    }
+  }
+
+  function addTriangle(emotion) {
+    emotionSet.unshift(emotion);
+    if (numItems >= MAX_ITEMS) {
+      // Remove the last item if we've reached max
+      emotionSet.pop();
+    } else {
+      // Have not yet reached max, continue counting
+      numItems++;
+    }
+
+    updateTriangles();
+  }
+  window.addTriangle = addTriangle;
+
+  function debug_randomColor() {
+    var colors = ['Yellow', 'Red', 'Blue', 'Green'];
+    return colors[~~(colors.length * Math.random())];
   }
 
   // Button click handlers
