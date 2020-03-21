@@ -51,17 +51,23 @@ wss.on('connection', function connection(ws) {
   connectedClients.push(ws);
   console.log(`New client connected (${connectedClients.length})`);
 
-  // Send initial state to client
-  ws.send(JSON.stringify({
+  // Send latest state to all clients
+  sendDataToAllConnectedClients({
     connectedClients: connectedClients.length,
     state: state,
-  }));
+  });
 
   // WebSocket disconnect
   ws.on("close", function onClose() {
     // Remove from list of connected clients
     connectedClients.splice(connectedClients.indexOf(ws), 1);
     console.log(`Client disconnected (${connectedClients.length})`);
+
+    // Send updated state to all clients
+    sendDataToAllConnectedClients({
+      connectedClients: connectedClients.length,
+      state: state,
+    });
   });
 
   // When the server receives data from a client
@@ -93,12 +99,10 @@ wss.on('connection', function connection(ws) {
 
     // Send the state and emotion payload to every connected client
     try {
-      connectedClients.forEach(function (client) {
-        client.send(JSON.stringify({
-          connectedClients: connectedClients.length,
-          state: state,
-          emotion: data.emotion,
-        }));
+      sendDataToAllConnectedClients({
+        connectedClients: connectedClients.length,
+        state: state,
+        emotion: data.emotion,
       });
     } catch (e) {
       // Paranoia-based error handling
@@ -106,3 +110,9 @@ wss.on('connection', function connection(ws) {
     }
   });
 });
+
+function sendDataToAllConnectedClients(payload) {
+  connectedClients.forEach(function (client) {
+    client.send(JSON.stringify(payload));
+  });
+}
