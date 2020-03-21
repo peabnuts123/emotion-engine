@@ -234,6 +234,7 @@ $(function () {
           // Add the triangle's SVG code (with no fill color set)
           $('#triangle-container>#triangles').append('<path ' +
             'd="M ' + pointTop.x + ' ' + pointTop.y + ' L ' + pointLeft.x + ' ' + pointLeft.y + ' L ' + pointRight.x + ' ' + pointRight.y + ' z" ' +
+            'fill="white"' +
             '/>');
 
           // Next triangle will be the other way up

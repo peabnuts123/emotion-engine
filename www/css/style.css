@@ -15,8 +15,6 @@ body{
   /* Prevent Safari from zooming when you click buttons */
   touch-action: manipulation;
   overflow: hidden;
-  background-color: black;
-  color: white;
 }
 
 
