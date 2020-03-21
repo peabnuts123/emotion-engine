@@ -88,15 +88,15 @@ body{
   font-size: 60px;
 }
 
-.emotion-joy {
-  fill: yellow;
+.emotion-determined {
+  fill: #FFF3A8;
 }
-.emotion-scared {
-  fill: lightblue;
+.emotion-afraid {
+  fill: #91C8EC;
 }
 .emotion-sad {
-  fill: blue;
+  fill: #22A5D9;
 }
-.emotion-angry {
-  fill: red;
+.emotion-stressed {
+  fill: #BADDFF;
 }

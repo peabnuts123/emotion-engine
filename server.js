@@ -3,10 +3,10 @@ const fs = require('fs');
 
 // SERVER STATE ===
 const DEFAULT_STATE = {
-  joyCount: 0,
-  scaredCount: 0,
+  determinedCount: 0,
+  afraidCount: 0,
   sadCount: 0,
-  angryCount: 0,
+  stressedCount: 0,
 };
 
 // Object that holds the server's state
@@ -20,10 +20,10 @@ try {
 
   // Default the state if it is partially undefined (e.g. if you add new properties)
   state = {
-    joyCount: serverStateParsed.joyCount || DEFAULT_STATE.joyCount,
-    scaredCount: serverStateParsed.scaredCount || DEFAULT_STATE.scaredCount,
+    determinedCount: serverStateParsed.determinedCount || DEFAULT_STATE.determinedCount,
+    afraidCount: serverStateParsed.afraidCount || DEFAULT_STATE.afraidCount,
     sadCount: serverStateParsed.sadCount || DEFAULT_STATE.sadCount,
-    angryCount: serverStateParsed.angryCount || DEFAULT_STATE.angryCount,
+    stressedCount: serverStateParsed.stressedCount || DEFAULT_STATE.stressedCount,
   };
 } catch (e) {
   // Handle any errors that happened by writing the default state to disk
@@ -69,20 +69,20 @@ wss.on('connection', function connection(ws) {
 
     // Update server state
     switch (data.emotion) {
-      case 'joy':
-        state.joyCount++;
+      case 'determined':
+        state.determinedCount++;
         saveState();
         break;
-      case 'scared':
-        state.scaredCount++;
+      case 'afraid':
+        state.afraidCount++;
         saveState();
         break;
       case 'sad':
         state.sadCount++;
         saveState();
         break;
-      case 'angry':
-        state.angryCount++;
+      case 'stressed':
+        state.stressedCount++;
         saveState();
         break;
       default:

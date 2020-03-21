@@ -33,10 +33,10 @@ $(function () {
     // If this is the first message then remove the "is-loading"
     //  class from all the buttons
     if (!hasReceivedFirstMessage) {
-      $('#button-joy').removeClass('is-loading');
-      $('#button-scared').removeClass('is-loading');
+      $('#button-determined').removeClass('is-loading');
+      $('#button-afraid').removeClass('is-loading');
       $('#button-sad').removeClass('is-loading');
-      $('#button-angry').removeClass('is-loading');
+      $('#button-stressed').removeClass('is-loading');
 
       // Mark first message as received so we don't
       //  do this again
@@ -75,10 +75,10 @@ $(function () {
    * Read the server's state object and update button totals based on that
    */
   function refreshTotals() {
-    $('#button-joy').text('Joy\n(' + serverState.joyCount + ')');
-    $('#button-scared').text('Scared\n(' + serverState.scaredCount + ')');
-    $('#button-sad').text('Sad\n(' + serverState.sadCount + ')');
-    $('#button-angry').text('Angry\n(' + serverState.angryCount + ')');
+    $('#button-determined').text("I'm feeling determined (" + serverState.determinedCount + ")");
+    $('#button-afraid').text("I'm feeling afraid (" + serverState.determinedCount + ")");
+    $('#button-sad').text("I'm feeling sad (" + serverState.determinedCount + ")");
+    $('#button-stressed').text("I'm feeling stressed (" + serverState.determinedCount + ")");
   }
 
   /**
@@ -180,7 +180,7 @@ $(function () {
     //  that doesn't exist.
     for (var i = 0; i < Math.min($paths.length, emotionSet.length); i++) {
       if (i < emotionSet.length) {
-        // Set a class on each element based on the emotion e.g. "emotion-joy"
+        // Set a class on each element based on the emotion e.g. "emotion-sad"
         // These classes are defined in `style.css` and set a fill color on the path
         $paths[i].setAttribute('class', 'emotion-' + emotionSet[i]);
       }
@@ -208,16 +208,16 @@ $(function () {
   }
 
   // Button click handlers
-  $('#button-joy').click(function () {
-    ws.send(JSON.stringify({ emotion: 'joy' }));
+  $('#button-determined').click(function () {
+    ws.send(JSON.stringify({ emotion: 'determined' }));
   });
-  $('#button-scared').click(function () {
-    ws.send(JSON.stringify({ emotion: 'scared' }));
+  $('#button-afraid').click(function () {
+    ws.send(JSON.stringify({ emotion: 'afraid' }));
   });
   $('#button-sad').click(function () {
     ws.send(JSON.stringify({ emotion: 'sad' }));
   });
-  $('#button-angry').click(function () {
-    ws.send(JSON.stringify({ emotion: 'angry' }));
+  $('#button-stressed').click(function () {
+    ws.send(JSON.stringify({ emotion: 'stressed' }));
   });
 });
