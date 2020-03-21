@@ -44,6 +44,13 @@ $(function () {
       refreshTotals();
     }
 
+    // If there is information about the number of connectedClients,
+    // store it as a property of server state
+    if (data.connectedClients) {
+      serverState.connectedClients = data.connectedClients;
+      refreshTotals();
+    }
+
     // If there is emotion information in the data, add it
     //  to the page
     if (data.emotion) {
@@ -57,6 +64,10 @@ $(function () {
     ws.close();
   };
 
+  $('#drawer').click(function () {
+    $('#drawer').toggleClass('is-open');
+  });
+
   // Draw all triangles to the screen (with or without fill)
   // and tell the browser to do this whenever the window size
   // changes as well
@@ -69,8 +80,25 @@ $(function () {
    * Read the server's state object and update button totals based on that
    */
   function refreshTotals() {
-    // @TODO this function does nothing
-    // Remove it or give it purpose
+    // If this is the first message then remove the "is-loading"
+    //  class from all the buttons
+    if (!hasReceivedFirstMessage) {
+      $('#drawer').removeClass('is-loading');
+
+      // Mark first message as received so we don't
+      //  do this again
+      hasReceivedFirstMessage = true;
+    }
+
+    $('#total-sad').text(serverState.sadCount);
+    $('#total-afraid').text(serverState.afraidCount);
+    $('#total-stressed').text(serverState.stressedCount);
+    $('#total-determined').text(serverState.determinedCount);
+    if (serverState.connectedClients > 1) {
+      $('#total-connected').text('There are ' + serverState.connectedClients + ' people connected right now');
+    } else {
+      $('#total-connected').text('You are the only person connected right now');
+    }
   }
 
   /**
@@ -193,6 +221,7 @@ $(function () {
             $('#' + BUTTON_PROPERTIES[buttonIndex].labelId).css('left', (pointTopLeft.x + pointBottomLeft.x) / 2);
             $('#' + BUTTON_PROPERTIES[buttonIndex].labelId).css('width', buttonsWidth);
             $('#' + BUTTON_PROPERTIES[buttonIndex].labelId).css('height', triangleHeight);
+            $('#' + BUTTON_PROPERTIES[buttonIndex].labelId).removeClass('is-hidden');
           }
         } else {
           // Draw triangles

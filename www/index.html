@@ -23,10 +23,35 @@
   </div>
 
 
-  <span class="button-label" id="label-sad">I&apos;m feeling sad</span>
-  <span class="button-label" id="label-afraid">I&apos;m feeling afraid</span>
-  <span class="button-label" id="label-stressed">I&apos;m feeling stressed</span>
-  <span class="button-label" id="label-determined">I&apos;m feeling determined</span>
+  <span class="button-label is-hidden" id="label-sad">I&apos;m feeling sad</span>
+  <span class="button-label is-hidden" id="label-afraid">I&apos;m feeling afraid</span>
+  <span class="button-label is-hidden" id="label-stressed">I&apos;m feeling stressed</span>
+  <span class="button-label is-hidden" id="label-determined">I&apos;m feeling determined</span>
+
+  <div class="drawer is-loading" id="drawer">
+    <p class="drawer--title" id="total-connected"></p>
+
+    <table class="total-table">
+      <tbody>
+        <tr>
+          <th>Sad</th>
+          <td class="total-table--value" id="total-sad">180</td>
+        </tr>
+        <tr>
+          <th>Afraid</th>
+          <td class="total-table--value" id="total-afraid">102</td>
+        </tr>
+        <tr>
+          <th>Stressed</th>
+          <td class="total-table--value" id="total-stressed">202</td>
+        </tr>
+        <tr>
+          <th>Determined</th>
+          <td class="total-table--value" id="total-determined">192</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="js/config.js"></script>
