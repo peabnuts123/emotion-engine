@@ -53,6 +53,7 @@ wss.on('connection', function connection(ws) {
 
   // Send initial state to client
   ws.send(JSON.stringify({
+    connectedClients: connectedClients.length,
     state: state,
   }));
 
@@ -94,6 +95,7 @@ wss.on('connection', function connection(ws) {
     try {
       connectedClients.forEach(function (client) {
         client.send(JSON.stringify({
+          connectedClients: connectedClients.length,
           state: state,
           emotion: data.emotion,
         }));
