@@ -19,7 +19,7 @@ services:
     networks:
       # Connect to external network used by traefik
       - traefik
-    command: sh -c 'npm install && npm start'
+    command: sh -c 'npm start'
 
   client:
     image: nginx:alpine
@@ -33,8 +33,6 @@ services:
       traefik.frontend.redirect.entryPoint: https
     volumes:
       - './www/:/usr/share/nginx/html:ro'
-    ports:
-      - '8080:80/tcp'
     networks:
       # Connect to external network used by traefik
       - traefik
